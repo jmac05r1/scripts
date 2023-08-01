@@ -1,12 +1,16 @@
 #!/bin/bash
 
+
+#######################################################################
+# This portion of script will identify all resources in region regardless of tags
+#######################################################################
 echo "Creating a CSV file of AWS resources with progress details"
 
 echo "region,service,resource_id,resource_name,hourly,daily,weekly,monthly,none" > aws_resources.csv
 
 # Array of AWS regions, you can add or remove as per your needs
 # declare -a regions=("us-east-1" "us-west-1")
-declare -a regions=("us-east-1")
+declare -a regions=("eu-west-1")
 
 for region in "${regions[@]}"
 do
@@ -43,10 +47,12 @@ do
     aws ec2 describe-volumes --region $region | jq -c '.Volumes[]' | while read volume
     do
         volumeId=$(echo $volume | jq -r .VolumeId)
-        volumeName=$(echo $volume | jq -r '.Tags[] | select(.Key=="Name") | .Value')
-        if [ -z "$volumeName" ]; then
+        volumeName=$(echo $volume | jq -r 'if .Tags then (.Tags[] | select(.Key=="Name") | .Value) else "N/A" end')
+
+        if [ -z "$volumeName" ] || [ "$volumeName" = "null" ]; then
             volumeName="N/A"
         fi
+
         echo "$region,EBS,$volumeId,$volumeName,,,," >> aws_resources.csv
     done
 

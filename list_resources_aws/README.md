@@ -1,4 +1,4 @@
-Script provides a list of resources on desired account in AWS 
+Script provides a list of resources on desired account in AWS that have tag "Key Instem:Terraform	 & Value true"
 Resources it will look for include:
 EC2 instances
 DynamoDB tables
@@ -8,3 +8,5 @@ Neptune clusters
 CloudFormation stacks
 RDS instances
 Aurora clusters
+
+Change "declare" state to your region on account
