@@ -1,51 +1,68 @@
 #!/bin/bash
 
 #######################################################################
-# Checks Public IP's 
+# Variables
 #######################################################################
 
-#IP_ADDRESS=x.x.x.x
-#REGION=us-east-1
-#
-## Check EC2 instances
-#echo "Checking EC2 instances in region $REGION..."
-#aws ec2 describe-instances --region $REGION --query 'Reservations[*].Instances[*].PublicIpAddress' --output text | grep -q $IP_ADDRESS && echo "IP $IP_ADDRESS is associated with an EC2 instance in $REGION"
-#
-## Check Elastic IPs
-#echo "Checking Elastic IPs in region $REGION..."
-#aws ec2 describe-addresses --region $REGION --query 'Addresses[*].PublicIp' --output text | grep -q $IP_ADDRESS && echo "IP $IP_ADDRESS is associated with an Elastic IP in $REGION"
-#
-## Check NAT Gateways
-#echo "Checking NAT Gateways in region $REGION..."
-#aws ec2 describe-nat-gateways --region $REGION --query 'NatGateways[*].NatGatewayAddresses[*].PublicIp' --output text | grep -q $IP_ADDRESS && echo "IP $IP_ADDRESS is associated with a NAT Gateway in $REGION"
+IP_ADDRESS="x.x.x.x"
+REGION=us-east-1
+FOUND_IP=false
 
+#######################################################################
+# Checks Public IP's 
+#######################################################################
+echo "checking public IP's"
+
+# Check EC2 instances
+EC2_INSTANCE=$(aws ec2 describe-instances --region $REGION --query "Reservations[*].Instances[?PublicIpAddress=='$IP_ADDRESS'].{ID:InstanceId}" --output text)
+if [ ! -z "$EC2_INSTANCE" ]; then
+  echo "IP $IP_ADDRESS is associated with an EC2 instance, Instance ID: $EC2_INSTANCE"
+  FOUND_IP=true
+fi
+
+# Check Elastic IPs
+ELASTIC_IP=$(aws ec2 describe-addresses --region $REGION --query "Addresses[?PublicIp=='$IP_ADDRESS'].{ID:AllocationId}" --output text)
+if [ ! -z "$ELASTIC_IP" ]; then
+  echo "IP $IP_ADDRESS is associated with an Elastic IP, Allocation ID: $ELASTIC_IP"
+  FOUND_IP=true
+fi
+
+# Check NAT Gateways
+NAT_GATEWAY=$(aws ec2 describe-nat-gateways --region $REGION --query "NatGateways[?NatGatewayAddresses[?PublicIp=='$IP_ADDRESS']].{ID:NatGatewayId}" --output text)
+VPC_ID=$(aws ec2 describe-nat-gateways --region $REGION --query "NatGateways[?NatGatewayAddresses[?PublicIp=='$IP_ADDRESS']].VpcId" --output text)
+if [ ! -z "$NAT_GATEWAY" ]; then
+  echo "IP $IP_ADDRESS is associated with a NAT Gateway, NAT Gateway ID: $NAT_GATEWAY, VPC ID: $VPC_ID"
+  FOUND_IP=true
+fi
 
 #######################################################################
 # Checks Private IP's
 #######################################################################
+echo "checking private IP's"
 
-ip="x.x.x.x"
-REGION=us-east-1
-echo "Searching EC2 instances in $REGION region"
-aws ec2 describe-instances --region $REGION --query "Reservations[*].Instances[*].{ID:InstanceId,IP:PrivateIpAddress}" --output text | grep $ip
-if [ $? -eq 0 ]; then
-  echo "IP belongs to an EC2 instance"
-  exit
+# Searching EC2 instances
+EC2_INSTANCE_PRIVATE=$(aws ec2 describe-instances --region $REGION --query "Reservations[*].Instances[?PrivateIpAddress=='$IP_ADDRESS'].{ID:InstanceId}" --output text)
+if [ ! -z "$EC2_INSTANCE_PRIVATE" ]; then
+  echo "IP $IP_ADDRESS belongs to an EC2 instance, Instance ID: $EC2_INSTANCE_PRIVATE"
+  FOUND_IP=true
 fi
 
-echo "Searching NAT Gateways in $REGION region"
-aws ec2 describe-nat-gateways --region $REGION --query "NatGateways[*].{ID:NatGatewayId,IP:PrivateIp}" --output text | grep $ip
-if [ $? -eq 0 ]; then
-  echo "IP belongs to a NAT gateway"
-  exit
+# Searching NAT Gateways for private IPs
+NAT_GATEWAY_PRIVATE=$(aws ec2 describe-nat-gateways --region $REGION --query "NatGateways[*].NatGatewayAddresses[?PrivateIp=='$IP_ADDRESS'].{ID:NatGatewayId}" --output text)
+SUBNET_ID=$(aws ec2 describe-nat-gateways --region $REGION --query "NatGateways[?NatGatewayAddresses[?PrivateIp=='$IP_ADDRESS']].SubnetId" --output text)
+VPC_ID_PRIVATE=$(aws ec2 describe-subnets --region $REGION --subnet-ids $SUBNET_ID --query "Subnets[0].VpcId" --output text)
+if [ ! -z "$NAT_GATEWAY_PRIVATE" ]; then
+  echo "Private IP $IP_ADDRESS belongs to a NAT gateway, NAT Gateway ID: $NAT_GATEWAY_PRIVATE, VPC ID: $VPC_ID_PRIVATE"
+  FOUND_IP=true
 fi
 
-echo "Searching Network Interfaces in $REGION region"
-aws ec2 describe-network-interfaces --region $REGION --query "NetworkInterfaces[*].{ID:NetworkInterfaceId,IP:PrivateIpAddress}" --output text | grep $ip
-if [ $? -eq 0 ]; then
-  echo "IP belongs to a Network Interface"
-  exit
+# Searching Network Interfaces
+NETWORK_INTERFACE=$(aws ec2 describe-network-interfaces --region $REGION --query "NetworkInterfaces[?PrivateIpAddress=='$IP_ADDRESS'].{ID:NetworkInterfaceId}" --output text)
+if [ ! -z "$NETWORK_INTERFACE" ]; then
+  echo "IP $IP_ADDRESS belongs to a Network Interface, Network Interface ID: $NETWORK_INTERFACE"
+  FOUND_IP=true
 fi
 
-echo "IP address not found"
-
+if ! $FOUND_IP; then
+  echo "IP address not found"
+fi
