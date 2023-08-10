@@ -11,7 +11,7 @@ echo "region,service,resource_id,resource_name,hourly,daily,weekly,monthly,none"
 ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
 
 # Array of AWS regions, you can add or remove as per your needs
-declare -a regions=("eu-west-1")
+declare -a regions=("us-east-1")
 
 for region in "${regions[@]}"
 do
