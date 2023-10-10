@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# AWS region
-aws_region="us-west-2"
+# Prompt for AWS region
+while [[ -z "$aws_region" ]]; do
+    read -p "Please enter the AWS region (e.g. us-west-2): " aws_region
+done
 export AWS_DEFAULT_REGION=$aws_region
 
 # List instance IDs, platforms, and states
