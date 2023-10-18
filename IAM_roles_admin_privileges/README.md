@@ -6,7 +6,7 @@ It lists all IAM roles in your AWS account.
 
 For each IAM role, it lists the attached policies.
 
-For each attached policy, it retrieves the policy document and checks if it grants administrative permissions by looking for actions that contain "iam:*."
+For each attached policy, it retrieves the policy document and checks if it grants administrative permissions by looking for administrative actions
 
 It writes the results (RoleName, PolicyName, IsAdminPolicy) to the CSV file.
 
