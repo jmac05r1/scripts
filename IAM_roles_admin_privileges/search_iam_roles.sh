@@ -29,7 +29,7 @@ for role in $roles; do
     for policy in $role_policies; do
         # Get the policy document
         policy_document=$(aws iam get-policy --policy-arn "arn:aws:iam::aws:policy/$policy" --query 'Policy.DefaultVersion.Document' --output json 2>/dev/null)
-      
+
         # Check if the policy document is not null and is valid JSON
         if [ -n "$policy_document" ] && jq -e . >/dev/null 2>&1 <<<"$policy_document"; then
             # Check if the policy document contains administrative actions
