@@ -1,0 +1,2 @@
+This script will create a CSV file named "databases.csv" with two columns: "Database Name" and "Enable auto minor version upgrade." 
+It correctly checks whether "Enable auto minor version upgrade" is enabled for each database and populates the CSV file accordingly.
