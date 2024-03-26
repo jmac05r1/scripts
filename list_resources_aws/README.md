@@ -14,3 +14,7 @@ RDS instances
 Aurora clusters
 
 Change "declare" state to your region on account
+
+#######################################################################
+# need to update where you're prompt for region
+#######################################################################

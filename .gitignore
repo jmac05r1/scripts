@@ -4,3 +4,6 @@ list_resources_aws/excel_listed_resources*
 
 *.csv
 /*.csv
+
+*.xlsx
+/*.xlsx
