@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<zabbix_export version="5.4" date="2025-03-31T00:00:00Z">
+  <templates>
+    <template>
+      <template>Website monitoring https</template>
+      <name>Website monitoring https</name>
+      <description>Template for monitoring up to two HTTPS URLs with customizable ports.</description>
+      <macros>
+        <macro>
+          <macro>{$HTTPS_HOST_1}</macro>
+          <value>example.com</value>
+        </macro>
+        <macro>
+          <macro>{$HTTPS_PORT_1}</macro>
+          <value>443</value>
+        </macro>
+        <macro>
+          <macro>{$HTTPS_HOST_2}</macro>
+          <value/>
+        </macro>
+        <macro>
+          <macro>{$HTTPS_PORT_2}</macro>
+          <value/>
+        </macro>
+      </macros>
+      <http_tests>
+        <http_test>
+          <name>{$HTTPS_HOST_1} Check</name>
+          <update_interval>60</update_interval>
+          <retries>1</retries>
+          <steps/>
+          <agent>Zabbix</agent>
+          <enabled>1</enabled>
+          <steps>
+            <step>
+              <name>{$HTTPS_HOST_1}</name>
+              <url>https://{$HTTPS_HOST_1}:{$HTTPS_PORT_1}/</url>
+              <required>200</required>
+              <status_codes>200</status_codes>
+            </step>
+          </steps>
+        </http_test>
+        <http_test>
+          <name>{$HTTPS_HOST_2} Check</name>
+          <update_interval>60</update_interval>
+          <retries>1</retries>
+          <steps/>
+          <agent>Zabbix</agent>
+          <enabled>1</enabled>
+          <steps>
+            <step>
+              <name>{$HTTPS_HOST_2}</name>
+              <url>https://{$HTTPS_HOST_2}:{$HTTPS_PORT_2}/</url>
+              <required>200</required>
+              <status_codes>200</status_codes>
+            </step>
+          </steps>
+        </http_test>
+      </http_tests>
+    </template>
+  </templates>
+</zabbix_export>
