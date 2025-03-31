@@ -1,10 +1,22 @@
 <?xml version="1.0"?>
 <zabbix_export version="5.4" date="2025-03-31T00:00:00Z">
+  <groups>
+    <group>
+      <uuid>e2e30254-2a69-4e1c-9151-f0b64e9f2f4b</uuid>
+      <name>Templates</name>
+    </group>
+  </groups>
   <templates>
     <template>
+      <uuid>fbf7d63a-26f8-4c33-a382-961e72c15a1d</uuid>
       <template>Website monitoring https</template>
       <name>Website monitoring https</name>
       <description>Template with macros for monitoring up to two HTTPS URLs using customizable ports and expected status codes.</description>
+      <groups>
+        <group>
+          <name>Templates</name>
+        </group>
+      </groups>
       <macros>
         <macro>
           <macro>{$HTTPS_HOST_1}</macro>
@@ -31,6 +43,12 @@
           <value>200</value>
         </macro>
       </macros>
+      <items/>
+      <discovery_rules/>
+      <httptests/>
+      <triggers/>
+      <dashboards/>
+      <value_maps/>
     </template>
   </templates>
 </zabbix_export>
