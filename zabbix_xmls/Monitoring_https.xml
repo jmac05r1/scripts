@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
-<zabbix_export version="5.4" date="2025-03-31T00:00:00Z">
+<zabbix_export version="6.0" date="2025-03-31T00:00:00Z">
   <groups>
     <group>
+      <uuid>11111111-aaaa-4bbb-8ccc-000000000001</uuid>
       <name>Templates</name>
     </group>
   </groups>
   <templates>
     <template>
+      <uuid>22222222-bbbb-4ccc-8ddd-000000000002</uuid>
       <template>Website monitoring https</template>
       <name>Website monitoring https</name>
       <description>Template with macros for up to two HTTPS URLs using customizable ports and expected status codes.</description>
