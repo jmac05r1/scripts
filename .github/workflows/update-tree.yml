@@ -3,7 +3,7 @@ name: Auto-Update Folder Tree in README
 on:
   push:
     branches:
-      - main  # Change if your default branch is 'master' or something else
+      - master  # Change if your default branch is 'master' or something else
 
 jobs:
   update-readme-tree:
