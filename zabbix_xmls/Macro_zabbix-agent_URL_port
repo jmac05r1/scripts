@@ -1,0 +1,24 @@
+1. Add Host Macros
+Go to Configuration > Hosts > [host] > Macros and define:
+
+Macro	Example Value
+{$URL_1}	https://example1.com:9443
+{$URL_2}	https://example2.com:8443
+
+2. Create Zabbix Agent Items
+Item 1
+Name: HTTPS check for URL 1
+
+Key:
+system.run["curl -sk -o /dev/null -w '%{http_code}' {$URL_1} || echo 000"]
+Type: Zabbix agent
+
+Type of info: Numeric (unsigned)
+
+Item 2
+Same as above, using {$URL_2}
+
+3. Create Triggers
+{HOSTNAME:system.run["curl -sk -o /dev/null -w '%{http_code}' {$URL_1} || echo 000"].last()}<>200
+(Repeat for {$URL_2} if needed)
+
