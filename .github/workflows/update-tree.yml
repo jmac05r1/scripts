@@ -13,18 +13,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Generate folder tree and update README
+      - name: Generate folder tree (Zabbix_Notes only) and update README
         run: |
-          TREE=$(tree -I '.git|node_modules' -L 3)
-
-          # Ensure the output folder exists
-          mkdir -p Zabbix_Notes
+          TREE=$(tree Zabbix_Notes -I '.git|node_modules' -L 3)
 
           awk -v tree="$TREE" '
             /<!-- TREE_START -->/ { print; print "```"; print tree; next }
             /<!-- TREE_END -->/ { print "```"; flag=0; next }
             !flag
           ' Zabbix_Notes/README.md > Zabbix_Notes/README.tmp && mv Zabbix_Notes/README.tmp Zabbix_Notes/README.md
+
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
