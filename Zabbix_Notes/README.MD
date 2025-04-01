@@ -1,4 +1,4 @@
-##  Zabbix HTTPS Checks via Agent with Macros
+##  [Zabbix HTTPS Checks via Agent with Macros](Examples/HTTPS_Checks_via_Agent_with_Macros)
 
 This repository provides a clean and scalable way to perform **HTTPS status code checks** using the **Zabbix Agent** and `system.run[]` items.
 
