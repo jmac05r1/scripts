@@ -49,6 +49,16 @@ Zabbix_Notes
 
 3 directories, 4 files
 ```
+Zabbix_Notes
+├── Instructions
+│   └── HTTPS_Checks_via_Agent_with_Macros
+├── README.md
+└── Templates
+    ├── HTTPS_agent_check
+    └── Template_Monitoring_https.xml
+
+3 directories, 4 files
+```
 .
 ├── Event_lookup_s3_permissions
 │   └── s3_lookup_permission.sh
