@@ -49,20 +49,6 @@
           <description>Returns HTTP status code for URL 2</description>
         </item>
       </items>
-      <triggers>
-        <trigger>
-          <uuid>33333333cccc4ddd8eee000000000003</uuid>
-          <expression>{Template HTTPS Check (Agent):system.run["curl -skL -o /dev/null -w '%{http_code}' {$URL_1} || echo 000"].last()}&lt;&gt;200</expression>
-          <name>URL 1 is not returning HTTP 200</name>
-          <priority>4</priority>
-        </trigger>
-        <trigger>
-          <uuid>44444444dddd4eee8fff000000000004</uuid>
-          <expression>{Template HTTPS Check (Agent):system.run["curl -skL -o /dev/null -w '%{http_code}' {$URL_2} || echo 000"].last()}&lt;&gt;200</expression>
-          <name>URL 2 is not returning HTTP 200</name>
-          <priority>4</priority>
-        </trigger>
-      </triggers>
     </template>
   </templates>
 </zabbix_export>
