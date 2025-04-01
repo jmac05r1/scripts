@@ -2,13 +2,11 @@
 <zabbix_export version="6.0" date="2025-03-31T00:00:00Z">
   <groups>
     <group>
-      <uuid>11111111aaaa4bbb8ccc000000000001</uuid>
       <name>Templates</name>
     </group>
   </groups>
   <templates>
     <template>
-      <uuid>22222222bbbb4ccc8ddd000000000002</uuid>
       <template>Template HTTPS Check (Agent)</template>
       <name>Template HTTPS Check (Agent)</name>
       <description>Template for HTTPS 200 checks using Zabbix agent and macros with system.run[]</description>
