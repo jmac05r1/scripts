@@ -9,8 +9,8 @@
   <templates>
     <template>
       <uuid>22222222bbbb4ccc8ddd000000000002</uuid>
-      <template>Website monitoring HTTPS (Agent)</template>
-      <name>Website monitoring HTTPS (Agent)</name>
+      <template>Template HTTPS Check (Agent)</template>
+      <name>Template HTTPS Check (Agent)</name>
       <description>Template for HTTPS 200 checks using Zabbix agent and macros with system.run[]</description>
       <groups>
         <group>
@@ -37,7 +37,6 @@
           <trends>30d</trends>
           <value_type>3</value_type>
           <description>Returns HTTP status code for URL 1</description>
-          <tags/>
         </item>
         <item>
           <name>HTTPS check for URL 2</name>
@@ -48,19 +47,18 @@
           <trends>30d</trends>
           <value_type>3</value_type>
           <description>Returns HTTP status code for URL 2</description>
-          <tags/>
         </item>
       </items>
       <triggers>
         <trigger>
           <uuid>33333333cccc4ddd8eee000000000003</uuid>
-          <expression>{Website monitoring HTTPS (Agent):system.run["curl -skL -o /dev/null -w '%{http_code}' {$URL_1} || echo 000"].last()}&lt;&gt;200</expression>
+          <expression>{Template HTTPS Check (Agent):system.run["curl -skL -o /dev/null -w '%{http_code}' {$URL_1} || echo 000"].last()}&lt;&gt;200</expression>
           <name>URL 1 is not returning HTTP 200</name>
           <priority>4</priority>
         </trigger>
         <trigger>
           <uuid>44444444dddd4eee8fff000000000004</uuid>
-          <expression>{Website monitoring HTTPS (Agent):system.run["curl -skL -o /dev/null -w '%{http_code}' {$URL_2} || echo 000"].last()}&lt;&gt;200</expression>
+          <expression>{Template HTTPS Check (Agent):system.run["curl -skL -o /dev/null -w '%{http_code}' {$URL_2} || echo 000"].last()}&lt;&gt;200</expression>
           <name>URL 2 is not returning HTTP 200</name>
           <priority>4</priority>
         </trigger>
