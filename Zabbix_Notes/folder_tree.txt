@@ -4,7 +4,8 @@ Zabbix_Notes
 ├── README.md
 ├── Templates
 │   ├── HTTPS_agent_check
-│   └── Template_Monitoring_https.xml
+│   ├── Template_Monitoring_https.xml
+│   └── https_agent_checkv2
 └── folder_tree.txt
 
-3 directories, 5 files
+3 directories, 6 files
