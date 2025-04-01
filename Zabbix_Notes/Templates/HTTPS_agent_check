@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<zabbix_export version="6.0" date="2025-03-31T00:00:00Z">
+  <groups>
+    <group>
+      <uuid>11111111aaaa4bbb8ccc000000000001</uuid>
+      <name>Templates</name>
+    </group>
+  </groups>
+  <templates>
+    <template>
+      <uuid>22222222bbbb4ccc8ddd000000000002</uuid>
+      <template>Website monitoring HTTPS (Agent)</template>
+      <name>Website monitoring HTTPS (Agent)</name>
+      <description>Template for HTTPS 200 checks using Zabbix agent and macros with system.run[]</description>
+      <groups>
+        <group>
+          <name>Templates</name>
+        </group>
+      </groups>
+      <macros>
+        <macro>
+          <macro>{$URL_1}</macro>
+          <value>https://example1.com:9443</value>
+        </macro>
+        <macro>
+          <macro>{$URL_2}</macro>
+          <value>https://example2.com:8443</value>
+        </macro>
+      </macros>
+      <items>
+        <item>
+          <name>HTTPS check for URL 1</name>
+          <type>0</type>
+          <key>system.run["curl -skL -o /dev/null -w '%{http_code}' {$URL_1} || echo 000"]</key>
+          <delay>60s</delay>
+          <history>7d</history>
+          <trends>30d</trends>
+          <value_type>3</value_type>
+          <description>Returns HTTP status code for URL 1</description>
+          <tags/>
+        </item>
+        <item>
+          <name>HTTPS check for URL 2</name>
+          <type>0</type>
+          <key>system.run["curl -skL -o /dev/null -w '%{http_code}' {$URL_2} || echo 000"]</key>
+          <delay>60s</delay>
+          <history>7d</history>
+          <trends>30d</trends>
+          <value_type>3</value_type>
+          <description>Returns HTTP status code for URL 2</description>
+          <tags/>
+        </item>
+      </items>
+      <triggers>
+        <trigger>
+          <uuid>33333333cccc4ddd8eee000000000003</uuid>
+          <expression>{Website monitoring HTTPS (Agent):system.run["curl -skL -o /dev/null -w '%{http_code}' {$URL_1} || echo 000"].last()}&lt;&gt;200</expression>
+          <name>URL 1 is not returning HTTP 200</name>
+          <priority>4</priority>
+        </trigger>
+        <trigger>
+          <uuid>44444444dddd4eee8fff000000000004</uuid>
+          <expression>{Website monitoring HTTPS (Agent):system.run["curl -skL -o /dev/null -w '%{http_code}' {$URL_2} || echo 000"].last()}&lt;&gt;200</expression>
+          <name>URL 2 is not returning HTTP 200</name>
+          <priority>4</priority>
+        </trigger>
+      </triggers>
+    </template>
+  </templates>
+</zabbix_export>
