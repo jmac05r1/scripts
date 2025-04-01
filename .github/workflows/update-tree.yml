@@ -17,12 +17,14 @@ jobs:
       run: |
         TREE=$(tree -I '.git|node_modules' -L 3)
 
+        # Ensure the output folder exists
+        mkdir -p Zabbix_notes
+
         awk -v tree="$TREE" '
           /<!-- TREE_START -->/ { print; print "```"; print tree; next }
           /<!-- TREE_END -->/ { print "```"; flag=0; next }
           !flag
         ' Zabbix_notes/README.md > Zabbix_notes/README.tmp && mv Zabbix_notes/README.tmp Zabbix_notes/README.md
-
 
     - name: Commit and push changes
       uses: stefanzweifel/git-auto-commit-action@v5
