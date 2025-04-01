@@ -9,7 +9,8 @@ Macro	Example Value
 Item 1
 Name: HTTPS check for URL 1
 Key:
-system.run["curl -sk -o /dev/null -w '%{http_code}' {$URL_1} || echo 000"]
+system.run["curl -skL -o /dev/null -w '%{http_code}' {$URL_1} || echo 000"]
+
 Type: Zabbix agent
 Type of info: Numeric (unsigned)
 
