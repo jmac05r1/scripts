@@ -8,4 +8,4 @@ list_resources_aws/excel_listed_resources*
 *.xlsx
 /*.xlsx
 
-.github*
+*.github*
