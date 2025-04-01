@@ -30,4 +30,3 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: auto-update folder tree in README.md"
-          token: ${{ secrets.GH_TOKEN }}
