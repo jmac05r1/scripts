@@ -9,6 +9,8 @@ Ideal for scenarios where:
 
 ---
 
+
+
 ## How It Works
 
 - Zabbix Agent executes `curl` locally to hit HTTPS endpoints
@@ -29,4 +31,11 @@ EnableRemoteCommands=1
 UnsafeUserParameters=1
 
 sudo systemctl restart zabbix-agent
+```
 
+---
+
+## Folder Structure
+
+<!-- TREE_START -->
+<!-- TREE_END -->
