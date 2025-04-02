@@ -1,0 +1,41 @@
+Zabbix Web Scenario Trigger Notes 
+Goal
+Monitor a website (https://example.com) using a Zabbix web scenario with:
+
+Scenario name: website_health_check_site
+
+Step name: website availability
+
+Expected HTTP response code: 200 OK
+
+We want a single trigger that alerts when:
+
+The site returns any HTTP response code other than 200
+
+OR the site is completely unreachable (timeout, SSL error, DNS failure, etc.)
+
+Combined Trigger Expression (Zabbix 6.4+ Syntax)
+
+last(/Web-Monitor/web.test.rspcode[website_health_check_site,website availability])<>200
+or
+last(/Web-Monitor/web.test.fail[website_health_check_site])<>0
+Replace Web-Monitor with the exact name of the host that owns the web scenario.
+
+🔎 What Each Condition Means
+Expression	Meaning
+last(...rspcode...)<>200	Zabbix got a response, but it's not 200 (e.g. 403, 500, 301)
+last(...fail...)<>0	The web scenario failed to reach the site at all (e.g. timeout, SSL error, DNS fail)
+Auto-Resolution Behavior
+This trigger will automatically resolve when:
+The site returns HTTP 200, and
+The scenario is no longer failing
+So when the site is back up and healthy, the trigger clears on its own.
+
+Suggested Trigger Name
+Website Health Check Failed: Bad HTTP Code or Site Unreachable (https://example.com)
+
+### Trigger testing w/expression ###
+Scenario	Last Response Code	Expression Result	Trigger Fires?
+Site returns 200	200	false	❌ No "will not fire trigger"
+Site returns 500	500	true	✅ Yes "will fire trigger"
+Site unreachable (no response)	still 200 (unchanged)	false	❌ No — but you need a separate trigger for this
