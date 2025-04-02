@@ -41,7 +41,8 @@ sudo systemctl restart zabbix-agent
 ```
 Zabbix_Notes
 ├── Instructions
-│   └── HTTPS_Checks_via_Agent_with_Macros
+│   ├── HTTPS_Checks_via_Agent_with_Macros
+│   └── Trigger_notes
 ├── README.md
 ├── Templates
 │   ├── HTTPS_agent_check
@@ -49,4 +50,4 @@ Zabbix_Notes
 │   └── https_agent_checkv2
 └── folder_tree.txt
 
-3 directories, 6 files
+3 directories, 7 files
