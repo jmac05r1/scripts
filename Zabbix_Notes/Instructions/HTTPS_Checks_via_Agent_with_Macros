@@ -21,3 +21,12 @@ Same as above, using {$URL_2}
 {HOSTNAME:system.run["curl -sk -o /dev/null -w '%{http_code}' {$URL_1} || echo 000"].last()}<>200
 (Repeat for {$URL_2} if needed)
 
+4. Testing - Use zabbix_get from the Zabbix server
+zabbix_get -s <monitored_host_ip> -k 'system.run["curl -skL -o /dev/null -w '\''%{http_code}'\'' https://example1.com:9443 || echo 000"]'
+
+
+### Trigger testing w/expression ###
+Scenario	Last Response Code	Expression Result	Trigger Fires?
+Site returns 200	200	false	❌ No "will not fire trigger"
+Site returns 500	500	true	✅ Yes "will fire trigger"
+Site unreachable (no response)	still 200 (unchanged)	false	❌ No — but you need a separate trigger for this
