@@ -1,0 +1,28 @@
+#!/bin/bash
+
+_file=$1
+USER=$2
+
+# Prompt for the password securely
+read -s -p "Enter Password: " PASSWORD
+echo
+
+# Print header
+printf "%-30s %-25s %14s %20s %6s %8s\n" "Hostname" "OS Version" "Last Patch" "Uptime" "" "Date"
+
+# Loop through each host
+while read -r x; do
+    _os=$(sshpass -p "$PASSWORD" ssh -tq -o PubkeyAuthentication=no -o StrictHostKeyChecking=accept-new "$USER@$x" \
+        "echo '$PASSWORD' | sudo -S -p '' grep 'PRETTY_NAME' /etc/os-release | awk -F'\"' '{printf \"%s\", \$2}'")
+
+    _dp=$(sshpass -p "$PASSWORD" ssh -tq -o PubkeyAuthentication=no -o StrictHostKeyChecking=accept-new "$USER@$x" \
+        "echo '$PASSWORD' | sudo -S -p '' yum -q history 2>/dev/null | egrep 'U |Up' | head -1 | awk -F'|' '{printf \"%s\", \$3}'")
+
+    _dr=$(sshpass -p "$PASSWORD" ssh -tq -o PubkeyAuthentication=no -o StrictHostKeyChecking=accept-new "$USER@$x" \
+        "echo '$PASSWORD' | sudo -S -p '' uptime | awk -F',' '{ printf \"%s\", \$1}'")
+
+    _dt=$(sshpass -p "$PASSWORD" ssh -tq -o PubkeyAuthentication=no -o StrictHostKeyChecking=accept-new "$USER@$x" \
+        "echo '$PASSWORD' | sudo -S -p '' date '+%m/%d/%y'")
+
+    printf "%-30s %-25s %14s %20s %6s %8s\n" "$x" "$_os" "$_dp" "$_dr" "as of:" "$_dt"
+done < "$HOME/notes/scripts/patching_script/$_file"
